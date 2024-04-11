@@ -159,4 +159,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-chapter_4_testing.py
+# hide all files I used to learn this chapter
+learning/

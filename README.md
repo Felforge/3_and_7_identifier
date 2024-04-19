@@ -1,5 +1,5 @@
 ---
-title: 3 And 7 Identifier
+title: MNIST Digit Identifier
 emoji: 🔥
 colorFrom: pink
 colorTo: purple
@@ -10,4 +10,4 @@ pinned: false
 license: apache-2.0
 ---
 
-Use app at https://huggingface.co/spaces/PrestonLXIX/3_and_7_identifier
+Use app at https://huggingface.co/spaces/PrestonLXIX/MNIST_Digit_identifier

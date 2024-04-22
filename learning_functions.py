@@ -18,7 +18,6 @@ def mnist_loss(predictions, targets):
         torch.tensor: Loss of the model, as a number 0 to 1, based on 
         how sure the model is of a predicition, not just a decision
     """
-    print(predictions)
     predictions = predictions.sigmoid()
     return torch.where(targets==1, 1-predictions, predictions).mean()
 
@@ -46,18 +45,6 @@ def batch_accuracy(xb, yb):
     Returns:
         torch.tensor: Accuracy of predicitions as a tensor
     """
-    preds = xb.abs().sigmoid()
-    preds *= 9
-    print(preds)
-    correct = xb.round() == yb
-    return correct.float().mean()
-
-def old_batch_accuracy(xb, yb):
     preds = xb.sigmoid()
     correct = (preds>0.5) == yb
     return correct.float().mean()
-
-if __name__ == '__main__':
-    inp_xb = torch.tensor([[0.234], [0.123], [0.987], [2.395], [3.164], [5.112], [3.867], [5.345], [5.836]])
-    print(inp_xb.sigmoid() * 6)
-    inp_yb = torch.tensor([[0], [0], [1], [2], [3], [5], [4], [6], [6]])

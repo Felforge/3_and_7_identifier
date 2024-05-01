@@ -10,6 +10,7 @@ TITLE = "MNIST Digit Identifier"
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NEURAL_NET = Net().to(DEVICE)
 NEURAL_NET.load_state_dict(torch.load('digit_identifier.pth'))
+NEURAL_NET.eval()
 
 def predict(model):
     """_summary_
@@ -18,7 +19,8 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        image_tensor = ToTensor()(sketch_image)
+        resized_image = sketch_image.resize((28,28))
+        image_tensor = ToTensor()(resized_image)
         output = model(image_tensor.unsqueeze(0).to(DEVICE))
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}

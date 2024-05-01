@@ -1,11 +1,14 @@
-from fastai.vision.all import load_learner
+from learning_functions import Net
+import torch
 import gradio as gr
 
 # Look at this link and make my own API whenever
 # https://github.com/fastai/tinypets/tree/master
 
-LEARNER = load_learner("digit_identifier.pkl")
 TITLE = "MNIST Digit Identifier"
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+NEURAL_NET = Net().to(DEVICE)
+NEURAL_NET.load_state_dict(torch.load('digit_identifier.pth'))
 
 def predict(model):
     """_summary_
@@ -21,5 +24,5 @@ def predict(model):
 
 label = gr.Label()
 
-iface = gr.Interface(fn=predict(LEARNER), inputs="sketchpad", outputs=label, title=TITLE)
+iface = gr.Interface(fn=predict(NEURAL_NET), inputs="sketchpad", outputs=label, title=TITLE)
 iface.launch()

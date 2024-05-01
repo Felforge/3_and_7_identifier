@@ -1,40 +1,34 @@
 import torch
 from torch import nn
+import torch.nn.functional as F
+from torch import optim
 
-NEURAL_NET_STRUCTURE = nn.Sequential(
-    nn.Linear(28*28,30),
-    nn.ReLU(),
-    nn.Linear(30,1)
-)
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+LOSS_FN = nn.CrossEntropyLoss()
 
-def mnist_loss(predictions, targets):
-    """Returns loss in learning to be used my model
-
-    Args:
-        predictions (torch.tensor): predicitions made my model
-        targets (torch.tensor): target values of predicitions
-
-    Returns:
-        torch.tensor: Loss of the model, as a number 0 to 1, based on 
-        how sure the model is of a predicition, not just a decision
+class Net(nn.Module):
+    """_summary_
+    ML learning architecture
     """
-    predictions = predictions.sigmoid()
-    return torch.where(targets==1, 1-predictions, predictions).mean()
-
-
-def init_params(size, std=1.0):
-    """Initialize random weights for every pixel of an image
-
-    Args:
-        size (integer/tuple): Size of resultant tensor. Put in tuple of of size and a 
-        number of integers per tensor element for a weight and just an integer for a bias.
-        std (float, optional): Scalar of resultant tensor. Defaults to 1.0.
-
-    Returns:
-        torch.tensor: tensor of random weights
-    """
-    return (torch.randn(size)*std).requires_grad_()
-
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
+        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
+        self.conv2_drop = nn.Dropout2d()
+        self.fc1 = nn.Linear(320, 50) # Fully connected layer
+        self.fc2 = nn.Linear(50, 10) # Want to end with 10 for softmax
+    def forward(self, x):
+        """_summary_
+        Activation for all things defined under __init__
+        """
+        x = F.relu(F.max_pool2d(self.conv1(x), 2))
+        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
+        x = x.view(-1, 320) # 20 x 4 x 4
+        x = F.relu(self.fc1(x))
+        x = F.dropout(x, training=self.training)
+        x = self.fc2(x)
+        return F.softmax(x)
+        
 def batch_accuracy(xb, yb):
     """Return accuracy of predicitions as an integer in a tensor
 
@@ -45,6 +39,35 @@ def batch_accuracy(xb, yb):
     Returns:
         torch.tensor: Accuracy of predicitions as a tensor
     """
-    preds = xb.sigmoid()
-    correct = (preds>0.5) == yb
+    correct = xb == yb
     return correct.float().mean()
+
+def train(model, train_dl, epoch):
+    model.train()
+    global optimizer
+    for batch_idx, (data, target) in enumerate(train_dl):
+        data, target = data.to(DEVICE), target.to(DEVICE)
+        optimizer.zero_grad()
+        output = model(data)
+        loss = LOSS_FN(output, target)
+        loss.backward()
+        optimizer = optimizer.step()
+        if batch_idx % 20 == 0:
+            print(f"Train Epoch: {epoch} [{batch_idx*len(data)}/{len(train_dl.dataset)} ({100. * batch_idx / len(train_dl):.0f}%)]\t{loss.item():.6f}")
+        
+def test(model, valid_dl):
+    model.eval()
+    test_loss = 0
+    correct = 0
+    global optimizer
+
+    with torch.no_grad():
+        for data, target in valid_dl:
+            data, target = data.to(DEVICE), target.to(DEVICE)
+            output = model(data)
+            test_loss += LOSS_FN(output, target).item()
+            pred = output.argmax(dim=1, keepdim=True)
+            correct += pred.eq(target.view_as(pred)).sum().item()
+
+    test_loss /= len(valid_dl.dataset)
+    print(f'\nTest Loss: Average Loss: {test_loss:.4f}, Accuracy: {correct}/{len(valid_dl.dataset)} {100. * correct / len(valid_dl.dataset):.0f}%')

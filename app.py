@@ -19,7 +19,7 @@ def predict(model):
     def predict_inner(sketch_image):
         output = model(sketch_image)
         prediction = output.argmax(dim=1, keepdim=True).item()
-        return prediction
+        return {prediction: 1.}
     return predict_inner
 
 label = gr.Label()

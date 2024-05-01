@@ -1,6 +1,7 @@
 from learning_functions import Net
 import torch
 import gradio as gr
+from torchvision.transforms import ToTensor
 
 # Look at this link and make my own API whenever
 # https://github.com/fastai/tinypets/tree/master
@@ -17,7 +18,8 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        output = model(sketch_image)
+        image_tensor = ToTensor()(sketch_image)
+        output = model(image_tensor.unsqueeze(0).to(DEVICE))
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner

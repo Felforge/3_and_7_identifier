@@ -24,7 +24,7 @@ def predict(model):
         resized_image = data.resize((28,28))
         image_tensor = ToTensor()(resized_image).unsqueeze(0)
         print(image_tensor.shape)
-        output = model(image_tensor.unsqueeze(0).to(DEVICE))
+        output = model(image_tensor.to(DEVICE))
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner

@@ -27,7 +27,7 @@ def predict(model):
         data = im.fromarray(data)
         grayscale_image = Grayscale(1)(data)
         image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
-        print(image_tensor)
+        print(image_tensor.shape)
         # image_tensor = image_tensor.reshape([1, 1, 28, 28])
         # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
         # print(image_tensor.shape)

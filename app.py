@@ -19,7 +19,7 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        test_tensor = torch.from_numpy(sketch_image['composite'])
+        test_tensor = torch.from_numpy(sketch_image['composite']).view(-1, 28*28).unsqueeze(0)
         print(test_tensor.shape)
         # resized_image = sketch_image.resize((28,28))
         # image_tensor = ToTensor()(resized_image)

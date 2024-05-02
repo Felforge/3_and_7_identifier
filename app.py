@@ -21,8 +21,8 @@ def predict(model):
     """
     def predict_inner(sketch_image):
         data = im.fromarray(sketch_image['composite'])
-        resized_image = data.resize((28,28))
-        grayscale_image = Grayscale(1)(resized_image)
+        #resized_image = data.resize((28,28))
+        grayscale_image = Grayscale(1)(data)
         image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         print(image_tensor.shape)
         output = model(image_tensor.to(DEVICE))

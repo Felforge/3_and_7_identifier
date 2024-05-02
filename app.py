@@ -23,8 +23,9 @@ def predict(model):
     def predict_inner(sketch_image):
         data = sketch_image['composite']
         # #data = im.fromarray(sketch_image['composite'])
-        data = cv2.resize(data, (28, 28))
+        #data = cv2.resize(data, (28, 28))
         data = im.fromarray(data)
+        data = data.resize((28, 28))
         return data
         #grayscale_image = Grayscale(1)(data)
         #return grayscale_image

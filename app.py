@@ -20,6 +20,7 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
+        
         print(sketch_image)
         # data = im.fromarray(sketch_image['composite'])
         # #resized_image = data.resize((28,28))

@@ -26,6 +26,7 @@ def predict(model):
         image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         print(image_tensor.shape)
         output = model(image_tensor.to(DEVICE))
+        print(output)
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner

@@ -1,8 +1,8 @@
 from torchvision.transforms import ToTensor, Grayscale
 from learning_functions import Net
-from flatdict import FlatDict
 from PIL import Image as im
 import gradio as gr
+import numpy as np
 import torch
 
 # Look at this link and make my own API whenever
@@ -21,15 +21,17 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        new = FlatDict(sketch_image)
-        print(new)
+        data = sketch_image['composite']
+        data = np.float32(data)
+        data = ToTensor()(data)
+        print(data.shape)
         # data = im.fromarray(sketch_image['composite'])
         # #resized_image = data.resize((28,28))
         # grayscale_image = Grayscale(1)(data)
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
         # print(image_tensor.shape)
-        # with torch.no_grad():
+        # # with torch.no_grad():
         #     output = model(image_tensor.to(DEVICE))
         # print(output)
         # prediction = output.argmax(dim=1, keepdim=True).item()

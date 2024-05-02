@@ -1,6 +1,7 @@
 from torchvision.transforms import ToTensor, Grayscale
 from learning_functions import Net
-from PIL import Image as im 
+from flatdict import FlatDict
+from PIL import Image as im
 import gradio as gr
 import torch
 
@@ -20,8 +21,8 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        
-        print(sketch_image)
+        new = FlatDict(sketch_image)
+        print(new)
         # data = im.fromarray(sketch_image['composite'])
         # #resized_image = data.resize((28,28))
         # grayscale_image = Grayscale(1)(data)
@@ -36,7 +37,7 @@ def predict(model):
     return predict_inner
 
 label = gr.Label()
-sketchpad = gr.Sketchpad(flatten=True)
+sketchpad = gr.Sketchpad()
 
-iface = gr.Interface(fn=predict(NEURAL_NET), inputs="sketchpad", outputs=label, title=TITLE)
+iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=label, title=TITLE)
 iface.launch()

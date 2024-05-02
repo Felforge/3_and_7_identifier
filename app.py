@@ -3,6 +3,7 @@ from learning_functions import Net
 from PIL import Image as im
 import gradio as gr
 import torch
+import cv2
 
 # Look at this link and make my own API whenever
 # https://github.com/fastai/tinypets/tree/master
@@ -21,17 +22,18 @@ def predict(model):
     """
     def predict_inner(sketch_image):
         data = sketch_image['composite']
-        data = im.fromarray(sketch_image['composite'])
-        grayscale_image = Grayscale(1)(data)
-        image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
-        image_tensor = image_tensor.reshape([1, 1, 28, 28])
-        image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
-        print(image_tensor.shape)
-        with torch.no_grad():
-            output = model(image_tensor.to(DEVICE))
-        print(output)
-        prediction = output.argmax(dim=1, keepdim=True).item()
-        return {prediction: 1.}
+        #data = im.fromarray(sketch_image['composite'])
+        data = cv2.resize(data, (28, 28))
+        # grayscale_image = Grayscale(1)(data)
+        # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
+        # image_tensor = image_tensor.reshape([1, 1, 28, 28])
+        # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
+        # print(image_tensor.shape)
+        # with torch.no_grad():
+        #     output = model(image_tensor.to(DEVICE))
+        # print(output)
+        # prediction = output.argmax(dim=1, keepdim=True).item()
+        # return {prediction: 1.}
     return predict_inner
 
 label = gr.Label()

@@ -30,7 +30,7 @@ def predict(model):
         #return data
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         image_tensor = ToTensor()(data)
-        image_tensor = image_tensor[:,:,:3].unsqueeze(0)
+        image_tensor = image_tensor[1:,:,:].unsqueeze(0)
         print(image_tensor.shape)
         return None
         # image_tensor = image_tensor.shape[0][0]

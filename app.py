@@ -26,10 +26,13 @@ def predict(model):
         #data = cv2.resize(data, (28, 28))
         data = im.fromarray(data)
         data = data.resize((28, 28))
-        data = data.convert("LA").convert("L")
-        return data
+        data = data.convert("LA")
+        #return data
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         image_tensor = ToTensor()(data)
+        image_tensor = image_tensor[:,:,:3].unsqueeze(0)
+        print(image_tensor.shape)
+        return None
         # image_tensor = image_tensor.shape[0][0]
         # return image_tensor
         # print(image_tensor.shape)

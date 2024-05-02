@@ -26,7 +26,7 @@ def predict(model):
         #data = cv2.resize(data, (28, 28))
         data = im.fromarray(data)
         data = data.resize((28, 28))
-        data = data.convert("L")
+        data = data.convert("1")
         return data
         #grayscale_image = Grayscale(1)(data)
         #return grayscale_image

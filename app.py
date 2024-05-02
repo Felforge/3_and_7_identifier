@@ -37,7 +37,6 @@ def predict(model):
 
 label = gr.Label()
 sketchpad = gr.Sketchpad()
-test = gr.Image()
 
 iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=label, title=TITLE)
 iface.launch()

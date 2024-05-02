@@ -24,7 +24,7 @@ def predict(model):
         data = sketch_image['composite']
         # #data = im.fromarray(sketch_image['composite'])
         data = cv2.resize(data, (28, 28))
-        data = cv2.imread(data, cv2.COLOR_RGBA2GRAY)
+        data = cv2.cvtColor(data, cv2.COLOR_RGBA2GRAY)
         data = im.fromarray(data)
         return data
         #grayscale_image = Grayscale(1)(data)

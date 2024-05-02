@@ -27,27 +27,23 @@ def predict(model):
         data = im.fromarray(data)
         data = data.resize((28, 28))
         data = data.convert("LA")
-        return data
-        #grayscale_image = Grayscale(1)(data)
-        #return grayscale_image
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
-        # image_tensor = ToTensor()(data)
+        image_tensor = ToTensor()(data)
         # image_tensor = image_tensor.shape[0][0]
         # return image_tensor
         # print(image_tensor.shape)
         # # image_tensor = image_tensor.reshape([1, 1, 28, 28])
         # # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
-        # # print(image_tensor.shape)
-        # with torch.no_grad():
-        #     output = model(image_tensor.to(DEVICE))
-        # print(output)
-        # prediction = output.argmax(dim=1, keepdim=True).item()
-        # return {prediction: 1.}
+        print(image_tensor.shape)
+        with torch.no_grad():
+            output = model(image_tensor.to(DEVICE))
+        print(output)
+        prediction = output.argmax(dim=1, keepdim=True).item()
+        return {prediction: 1.}
     return predict_inner
 
 label = gr.Label()
 sketchpad = gr.Sketchpad()
-test = gr.Image()
 
-iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=test, title=TITLE)
+iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=label, title=TITLE)
 iface.launch()

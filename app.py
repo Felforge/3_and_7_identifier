@@ -1,4 +1,4 @@
-from torchvision.transforms import ToTensor, Grayscale
+from torchvision.transforms import ToTensor, ToPILImage
 from learning_functions import Net
 from PIL import Image as im
 import gradio as gr
@@ -30,9 +30,8 @@ def predict(model):
         #return data
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         image_tensor = ToTensor()(data)
-        image_tensor = image_tensor[1:,:,:].unsqueeze(0)
-        print(image_tensor.shape)
-        return None
+        image_tensor = image_tensor[1:,:,:].unsqueeze(0).to(DEVICE)
+        return ToPILImage()(image_tensor)
         # image_tensor = image_tensor.shape[0][0]
         # return image_tensor
         # print(image_tensor.shape)
@@ -40,7 +39,7 @@ def predict(model):
         # # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.
         print(image_tensor.shape)
         with torch.no_grad():
-            output = model(image_tensor.to(DEVICE))
+            output = model(image_tensor)
         print(output)
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}

@@ -23,7 +23,8 @@ def predict(model):
                 test_tensor = torch.from_numpy(value).unsqueeze(0)
                 print(f'{key}: {test_tensor.shape}')
             except TypeError:
-                print(value)
+                test_tensor = torch.from_numpy(value[0]).unsqueeze(0)
+                print(f'{key}: {test_tensor.shape}')
         # resized_image = sketch_image.resize((28,28))
         # image_tensor = ToTensor()(resized_image)
         # output = model(image_tensor.unsqueeze(0).to(DEVICE))

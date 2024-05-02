@@ -19,8 +19,11 @@ def predict(model):
     """
     def predict_inner(sketch_image):
         for key, value in sketch_image.items():
-            test_tensor = torch.from_numpy(value).unsqueeze(0)
-            print(f'{key}: {test_tensor.shape}')
+            try:
+                test_tensor = torch.from_numpy(value).unsqueeze(0)
+                print(f'{key}: {test_tensor.shape}')
+            except TypeError:
+                print(value)
         # resized_image = sketch_image.resize((28,28))
         # image_tensor = ToTensor()(resized_image)
         # output = model(image_tensor.unsqueeze(0).to(DEVICE))

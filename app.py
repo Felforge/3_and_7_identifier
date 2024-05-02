@@ -32,8 +32,10 @@ def predict(model):
         #return grayscale_image
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         image_tensor = ToTensor()(data)
-        image_tensor = image_tensor.shape[0][0]
-        new_image = ToPILImage()(image_tensor)
+        tensor_list = []
+        for c in range(image_tensor.shape[0]):
+            tensor_list.append(image_tensor[:, c:c+1, ...])
+        new_image = ToPILImage()(tensor_list[0])
         return new_image
         # print(image_tensor.shape)
         # # image_tensor = image_tensor.reshape([1, 1, 28, 28])

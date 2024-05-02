@@ -24,7 +24,9 @@ def predict(model):
         data = sketch_image['composite']
         #data = im.fromarray(sketch_image['composite'])
         data = cv2.resize(data, (28, 28))
-        # grayscale_image = Grayscale(1)(data)
+        data = im.fromarray(data)
+        grayscale_image = Grayscale(1)(data)
+        print(grayscale_image)
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         # image_tensor = image_tensor.reshape([1, 1, 28, 28])
         # image_tensor = torch.tensor(grayscale_image, dtype=torch.float32).unsqueeze(0) / 255.

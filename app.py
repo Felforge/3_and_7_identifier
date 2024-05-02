@@ -23,7 +23,8 @@ def predict(model):
         data = im.fromarray(sketch_image['composite'])
         #resized_image = data.resize((28,28))
         grayscale_image = Grayscale(1)(data)
-        image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
+        #image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
+        image_tensor = torch.tensor(img, dtype=torch.float32).unsqueeze(0) / 255.
         print(image_tensor.shape)
         with torch.no_grad():
             output = model(image_tensor.to(DEVICE))

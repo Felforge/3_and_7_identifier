@@ -23,10 +23,11 @@ def predict(model):
     def predict_inner(sketch_image):
         data = sketch_image['composite']
         # #data = im.fromarray(sketch_image['composite'])
-        # data = cv2.resize(data, (28, 28))
+        data = cv2.resize(data, (28, 28))
         data = im.fromarray(data)
-        grayscale_image = Grayscale(1)(data)
-        return grayscale_image
+        return data
+        #grayscale_image = Grayscale(1)(data)
+        #return grayscale_image
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         # print(image_tensor.shape)
         # # image_tensor = image_tensor.reshape([1, 1, 28, 28])

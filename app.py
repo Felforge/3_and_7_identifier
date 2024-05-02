@@ -1,4 +1,4 @@
-from torchvision.transforms import ToTensor
+from torchvision.transforms import ToTensor, Grayscale
 from learning_functions import Net
 from PIL import Image as im 
 import gradio as gr
@@ -22,7 +22,8 @@ def predict(model):
     def predict_inner(sketch_image):
         data = im.fromarray(sketch_image['composite'])
         resized_image = data.resize((28,28))
-        image_tensor = ToTensor()(resized_image).unsqueeze(0)
+        grayscale_image = Grayscale(1)(resized_image)
+        image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         print(image_tensor.shape)
         output = model(image_tensor.to(DEVICE))
         prediction = output.argmax(dim=1, keepdim=True).item()

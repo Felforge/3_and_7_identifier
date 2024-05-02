@@ -1,3 +1,4 @@
+from torchvision.transforms.functional import invert
 from torchvision.transforms import ToTensor, ToPILImage
 from learning_functions import Net
 from PIL import Image as im
@@ -30,8 +31,8 @@ def predict(model):
         #return data
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         image_tensor = ToTensor()(data)
-        image_tensor = image_tensor[:1,:,:]  #.unsqueeze(0).to(DEVICE)
-        return ToPILImage()(image_tensor)
+        image_tensor = image_tensor[1:,:,:]  #.unsqueeze(0).to(DEVICE)
+        return invert(ToPILImage()(image_tensor))
         # image_tensor = image_tensor.shape[0][0]
         # return image_tensor
         # print(image_tensor.shape)

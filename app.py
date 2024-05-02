@@ -19,11 +19,13 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        resized_image = sketch_image.resize((28,28))
-        image_tensor = ToTensor()(resized_image)
-        output = model(image_tensor.unsqueeze(0).to(DEVICE))
-        prediction = output.argmax(dim=1, keepdim=True).item()
-        return {prediction: 1.}
+        test_tensor = torch.tensor(sketch_image, dtype=torch.float32).unsqueeze(0).unsqueeze(0) / 255.
+        print(test_tensor.shape)
+        # resized_image = sketch_image.resize((28,28))
+        # image_tensor = ToTensor()(resized_image)
+        # output = model(image_tensor.unsqueeze(0).to(DEVICE))
+        # prediction = output.argmax(dim=1, keepdim=True).item()
+        # return {prediction: 1.}
     return predict_inner
 
 label = gr.Label()

@@ -26,6 +26,7 @@ def predict(model):
         data = cv2.resize(data, (28, 28))
         data = im.fromarray(data)
         grayscale_image = Grayscale(1)(data)
+        return grayscale_image
         image_tensor = ToTensor()(grayscale_image).unsqueeze(0)
         print(image_tensor.shape)
         # image_tensor = image_tensor.reshape([1, 1, 28, 28])
@@ -40,6 +41,7 @@ def predict(model):
 
 label = gr.Label()
 sketchpad = gr.Sketchpad()
+test = gr.Image()
 
-iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=label, title=TITLE)
+iface = gr.Interface(fn=predict(NEURAL_NET), inputs=sketchpad, outputs=test, title=TITLE)
 iface.launch()

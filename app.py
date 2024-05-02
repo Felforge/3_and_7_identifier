@@ -21,12 +21,11 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
-        for i in sketch_image.keys():
-            print(i)
-        # data = sketch_image['composite']
+        data = sketch_image['composite']
         # #data = im.fromarray(sketch_image['composite'])
         # data = cv2.resize(data, (28, 28))
-        # data = im.fromarray(data)
+        data = im.fromarray(data)
+        return data
         # grayscale_image = Grayscale(1)(data)
         # return grayscale_image
         # image_tensor = ToTensor()(grayscale_image).unsqueeze(0)

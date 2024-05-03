@@ -31,16 +31,12 @@ def predict(model):
         # Get Predicition and Probabilities
         with torch.no_grad():
             output = model(image_tensor).sigmoid() - 0.5
-        print(output)
-        probability_tensor = output
-        for _ in range(2): # Run twice to make it add up to 100
-            output_sum = torch.sum(probability_tensor)
-            probability_tensor = (output / output_sum) * 100
-            probability_tensor = probability_tensor.to(torch.int32) / 100
-            print(probability_tensor)
-            probability_tensor = probability_tensor.to(torch.float32)
-            print(probability_tensor)
+        output_sum = torch.sum(output)
+        probability_tensor = (output / output_sum) * 100
+        probability_tensor = probability_tensor.to(torch.int32) / 100
+        probability_tensor = probability_tensor.to(torch.float32)
         prediction = output.argmax(dim=1, keepdim=True).item()
+        print(probability_tensor)
         return {prediction: 1.}
     return predict_inner
 

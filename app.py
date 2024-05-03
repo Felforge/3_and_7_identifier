@@ -27,7 +27,7 @@ def predict(model):
         data = data.convert("LA")
         image_tensor = ToTensor()(data)
         image_tensor = image_tensor[1:,:,:].unsqueeze(0).to(DEVICE)
-        
+
         # Get Predicition and Probabilities
         with torch.no_grad():
             output = model(image_tensor).sigmoid() - 0.5
@@ -38,8 +38,10 @@ def predict(model):
         probability_tensor = probability_tensor.to(torch.float32)
         return_labels = {}
         for i, elem in enumerate(probability_tensor):
-            if elem != 0.:
-                return_labels[i] = elem
+            num = elem.item()
+            print(num)
+            if num != 0.:
+                return_labels[i] = num
         return return_labels
     return predict_inner
 

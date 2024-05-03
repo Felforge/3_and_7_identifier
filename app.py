@@ -38,6 +38,7 @@ def predict(model):
         probability_tensor = probability_tensor.to(torch.float32)
         return_labels = {}
         for i, elem in enumerate(probability_tensor):
+            print(elem)
             num = elem.item()
             print(num)
             if num != 0.:

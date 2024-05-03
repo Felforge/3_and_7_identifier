@@ -4,9 +4,6 @@ from PIL import Image as im
 import gradio as gr
 import torch
 
-# Look at this link and make my own API whenever
-# https://github.com/fastai/tinypets/tree/master
-
 TITLE = "MNIST Digit Identifier"
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NEURAL_NET = Net().to(DEVICE)
@@ -38,8 +35,7 @@ def predict(model):
         probability_tensor = probability_tensor.to(torch.float32)
         return_labels = {}
         for i in range(10):
-            num = probability_tensor.data[i]
-            print(num)
+            num = probability_tensor.data[0].data[i]
             if num != 0.:
                 return_labels[i] = num
         return return_labels

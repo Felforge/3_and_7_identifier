@@ -22,15 +22,21 @@ def predict(model):
         model (pickle file): Learner class produced in notebook
     """
     def predict_inner(sketch_image):
+        # Process input
         data = sketch_image['composite']
         data = im.fromarray(data)
         data = data.resize((28, 28))
         data = data.convert("LA")
         image_tensor = ToTensor()(data)
         image_tensor = image_tensor[1:,:,:].unsqueeze(0).to(DEVICE)
+        
+        # Get Predicition and Probabilities
         with torch.no_grad():
-            output = model(image_tensor).sigmoid() - 0.5
+            output = model(image_tensor).sigmoid()
         print(output)
+        output_sum = torch.sum(output)
+        probability_tensor = output / output_sum
+        print(probability_tensor)
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner

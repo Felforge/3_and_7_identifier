@@ -7,7 +7,7 @@ import torch
 TITLE = "MNIST Digit Identifier"
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NEURAL_NET = Net().to(DEVICE)
-NEURAL_NET.load_state_dict(torch.load('digit_identifier.pth'))
+NEURAL_NET.load_state_dict(torch.load('mnist_identifier.pth'))
 NEURAL_NET.eval()
 
 def predict(model):

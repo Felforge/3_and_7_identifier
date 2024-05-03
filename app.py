@@ -34,7 +34,8 @@ def predict(model):
         print(output)
         output_sum = torch.sum(output)
         probability_tensor = output / output_sum
-        print(output_sum, probability_tensor)
+        for i, elem in enumerate(probability_tensor):
+            probability_tensor[i] = int(elem * 100) / 100.
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner

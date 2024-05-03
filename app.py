@@ -29,10 +29,7 @@ def predict(model):
         with torch.no_grad():
             output = model(image_tensor).sigmoid() - 0.5
         output_sum = torch.sum(output)
-        probability_tensor = (output / output_sum) * 100
-        probability_tensor = probability_tensor.to(torch.int32)
-        probability_tensor = probability_tensor / 100
-        probability_tensor = probability_tensor.to(torch.float32)
+        probability_tensor = torch.round((output / output_sum), decimals=2)
         return_labels = {}
         for i in range(10):
             num = probability_tensor.data[0].data[i]

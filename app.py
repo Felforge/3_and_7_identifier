@@ -29,7 +29,7 @@ def predict(model):
         image_tensor = ToTensor()(data)
         image_tensor = image_tensor[1:,:,:].unsqueeze(0).to(DEVICE)
         with torch.no_grad():
-            output = model(image_tensor)
+            output = model(image_tensor).sigmoid()
         print(output)
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}

@@ -37,9 +37,8 @@ def predict(model):
         probability_tensor = probability_tensor / 100
         probability_tensor = probability_tensor.to(torch.float32)
         return_labels = {}
-        print(probability_tensor, probability_tensor.shape)
         for i in range(10):
-            num = probability_tensor.data[i]
+            num = probability_tensor.data[0].data[i]
             print(num)
             if num != 0.:
                 return_labels[i] = num

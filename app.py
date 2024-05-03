@@ -36,7 +36,6 @@ def predict(model):
         return_labels = {}
         for i in range(10):
             num = probability_tensor.data[0].data[i]
-            print(num)
             if num != 0.:
                 return_labels[i] = num
         return return_labels

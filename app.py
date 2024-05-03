@@ -31,17 +31,16 @@ def predict(model):
         # Get Predicition and Probabilities
         with torch.no_grad():
             output = model(image_tensor).sigmoid() - 0.5
-        probability_tensor = output
-        for _ in range(2):
-            output_sum = torch.sum(probability_tensor)
-            probability_tensor = (probability_tensor / output_sum) * 100
-            probability_tensor = probability_tensor.to(torch.int32)
-            print(output_sum, probability_tensor)
-            probability_tensor = probability_tensor / 100
-            probability_tensor = probability_tensor.to(torch.float32)
-            print(probability_tensor)
-        prediction = output.argmax(dim=1, keepdim=True).item()
-        return {prediction: 1.}
+        output_sum = torch.sum(output)
+        probability_tensor = (output / output_sum) * 100
+        probability_tensor = probability_tensor.to(torch.int32)
+        probability_tensor = probability_tensor / 100
+        probability_tensor = probability_tensor.to(torch.float32)
+        return_labels = {}
+        for i, elem in enumerate(probability_tensor):
+            if elem != 0.:
+                return_labels[i] = elem
+        return return_labels
     return predict_inner
 
 label = gr.Label()

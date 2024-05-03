@@ -32,7 +32,7 @@ def predict(model):
         
         # Get Predicition and Probabilities
         with torch.no_grad():
-            output = model(image_tensor).sigmoid()
+            output = model(image_tensor).sigmoid() - 0.5
         print(output)
         output_sum = torch.sum(output)
         probability_tensor = output / output_sum

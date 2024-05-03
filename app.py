@@ -4,9 +4,6 @@ from PIL import Image as im
 import gradio as gr
 import torch
 
-# Look at this link and make my own API whenever
-# https://github.com/fastai/tinypets/tree/master
-
 TITLE = "MNIST Digit Identifier"
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NEURAL_NET = Net().to(DEVICE)

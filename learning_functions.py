@@ -1,7 +1,6 @@
-import torch
-from torch import nn
 import torch.nn.functional as F
-from torch import optim
+from torch import nn
+import torch
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 LOSS_FN = nn.CrossEntropyLoss()
@@ -28,46 +27,3 @@ class Net(nn.Module):
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
         return F.softmax(x)
-        
-def batch_accuracy(xb, yb):
-    """Return accuracy of predicitions as an integer in a tensor
-
-    Args:
-        xb (torch.tensor): tensor of predicitions
-        yb (torch.tensor): tensor of labels to match images with 
-
-    Returns:
-        torch.tensor: Accuracy of predicitions as a tensor
-    """
-    correct = xb == yb
-    return correct.float().mean()
-
-def train(model, train_dl, epoch):
-    model.train()
-    global optimizer
-    for batch_idx, (data, target) in enumerate(train_dl):
-        data, target = data.to(DEVICE), target.to(DEVICE)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = LOSS_FN(output, target)
-        loss.backward()
-        optimizer = optimizer.step()
-        if batch_idx % 20 == 0:
-            print(f"Train Epoch: {epoch} [{batch_idx*len(data)}/{len(train_dl.dataset)} ({100. * batch_idx / len(train_dl):.0f}%)]\t{loss.item():.6f}")
-        
-def test(model, valid_dl):
-    model.eval()
-    test_loss = 0
-    correct = 0
-    global optimizer
-
-    with torch.no_grad():
-        for data, target in valid_dl:
-            data, target = data.to(DEVICE), target.to(DEVICE)
-            output = model(data)
-            test_loss += LOSS_FN(output, target).item()
-            pred = output.argmax(dim=1, keepdim=True)
-            correct += pred.eq(target.view_as(pred)).sum().item()
-
-    test_loss /= len(valid_dl.dataset)
-    print(f'\nTest Loss: Average Loss: {test_loss:.4f}, Accuracy: {correct}/{len(valid_dl.dataset)} {100. * correct / len(valid_dl.dataset):.0f}%')

@@ -34,9 +34,9 @@ def predict(model):
         probability_tensor = output
         for _ in range(2):
             output_sum = torch.sum(probability_tensor)
-            probability_tensor = (output / output_sum) * 100
+            probability_tensor = (probability_tensor / output_sum) * 100
             probability_tensor = probability_tensor.to(torch.int32)
-            print(output_sum, probability_tensor)
+            print(probability_tensor)
             probability_tensor = probability_tensor / 100
             probability_tensor = probability_tensor.to(torch.float32)
             print(probability_tensor)

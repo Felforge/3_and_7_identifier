@@ -33,9 +33,9 @@ def predict(model):
             output = model(image_tensor).sigmoid() - 0.5
         print(output)
         output_sum = torch.sum(output)
-        probability_tensor = output / output_sum
-        for i, elem in enumerate(probability_tensor):
-            probability_tensor[i] = int(elem.item() * 100) / 100.
+        probability_tensor = (output / output_sum) * 100
+        probability_tensor = probability_tensor.to(torch.int32)
+        print(probability_tensor)
         prediction = output.argmax(dim=1, keepdim=True).item()
         return {prediction: 1.}
     return predict_inner
